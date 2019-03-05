@@ -22,8 +22,11 @@ to use the same underlying NEAT lua code with tweaks for Sonic the Hedgehog 2 on
 
 ## Instructions
 1. Install [BizHawk](https://github.com/TASVideos/BizHawk) prerequesites & emulator:
-2. Get the rom of [Sonic 2] any build works providing the RAM locations are the same. 
-3. Run the script from Tools / Lua Console / finally click start
+2. Download run.lua, place into BizHawk/Lua/Genesis/Neat
+3. Create 2 folders, pool and state in the Neat folder
+4. Get the rom of [Sonic 2] any build works providing the RAM locations are the same. 
+5. Load sonic and created a Named Save State called S2.State on the level you want to start from and put into state 
+5. Run the script from Tools / Lua Console / finally click start
 
 I, in no way claim to have written any of the LUA Neat implementation in this script other than some minor tweaks to weighting and generation. 
 
