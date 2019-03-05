@@ -1,83 +1,42 @@
-# Neat[Tinkering]
+# NEAT Sonic the Headgehog 2
+
 Update to [Seth Bling's Mar I/O][1] lua code, forked from [mam91/Neat-Genetic-Mario][2].
 
-## (Planned) additions & changes ##
-* [x] [Fixed function which determines if Mario got hit].
-* [x] [Added a variable for BizHawk path to make setup easier].
-* * [x] [Added instructions to Readme][Readme#1].
-* [x] [Include lists of good/neutral for both sprites and extended sprites].
-* [x] [Include powerups to fitness calculation]. (as antagonist to the damage counter)
-* [x] [Option to start with specific powerup].
-* [x] [Give bonus for received 1-Ups].
-* [ ] Move bonus multiplicators to config.
-* [ ] Show fitness calculation in GUI.
-* [ ] Make GUI drawing optional. (Network & data)
-* [ ] Make the drawing of the circle optional & disable it in overworld. (just cosmetical changes)
-* [ ] Let the **Restart** button appear again.
-* [ ] Reorganize the control form.
+Original https://github.com/wts42/Neat-Genetic-Mario/
+Updated https://github.com/mam91/Neat-Genetic-Mario
 
-## Readme from [original repository][2]
-> Added coins/score/damage to fitness calculation.
->
-> Added version with weighted distance: added circle around mario where enemies inside the circle are treated as most important and enemies 
-> outside of the circle have their weights reduced depending on how far outside the circle.
->
-> Added a start/stop button so that the algorithm doesn't auto-start on load and so that one can easily pause the algorithm.
->
-> For some reason, the load feature did not work on my machine.  This is now fixed so that I can load a previously saved pool.
->
-> Moved the neat graphics to the form window instead of as a gui overlay.  I liked the gui overlay but I prefer to to separate the game > window from the neat information.
->
-> Did some miscellaneous house-keeping, like moving global config settings into their own file, etc.
-=======
-# NeatResearch
+This lua code originally written for Maria on the SNES / NES. This implementation is coded
+to use the same underlying NEAT lua code with tweaks for Sonic the Hedgehog 2 on the Megadrive / Genesis. 
 
-Update to Seth Bling's Mar I/O lua code.  
-
-Added coins/score/damage to fitness calculation.
-
-Added version with weighted distance: added circle around mario where enemies inside the circle are treated as most important and enemies outside of the circle have their weights reduced depending on how far outside the circle.
-
-Added a start/stop button so that the algorithm doesn't auto-start on load and so that one can easily pause the algorithm.
-
-For some reason, the load feature did not work on my machine.  This is now fixed so that I can load a previously saved pool.
-
-Moved the neat graphics to the form window instead of as a gui overlay.  I liked the gui overlay but I prefer to to separate the game window from the neat information.
-
-Did some miscellaneous house-keeping, like moving global config settings into their own file, etc.
-
+## Additions & changes ##
+* [x] Added sonic 2 sprites with simple good, bad, neutral types
+* [x] Joined the files back together as easier to debug on Bizhawk
+* [x] Removed code not needed for sonic and renamed others.
+* [x] Custom JoyPad function so AI doesnt hold down buttons *
+* [x] Added a more defined bonus / reward config for powerups, rings, scores.
+* [x] Can deal with finishing a level to continue onto the next on the same run by checking for locked controls.
+* [x] Basic reward system when fighting a boss so it continues as long as is still hitting the boss
+* [x] Jump checking so we can reward jumping vs just running forward
+* [x] Getting hit now causes instant restart, this increases generation progress but better long term performance.
+* [x] Console now outputs information from previous run including fitness, bonuses, rightmost, etc. 
 
 ## Instructions
 1. Install [BizHawk](https://github.com/TASVideos/BizHawk) prerequesites & emulator:
-   1. [BizHawk prerequesites (currently 2.1)](https://github.com/TASVideos/BizHawk-Prereqs/releases)
-   2. [BizHawk (currently 2.2.2)](https://github.com/TASVideos/BizHawk/releases)
-2. Get the rom of [Super Mario World (USA)](https://www.google.de/search?q=Super+Mario+World+(USA).sfc). (Other Super Mario World roms might work too but are not tested)
+2. Get the rom of [Sonic 2] any build works providing the RAM locations are the same. 
+3. Run the script from Tools / Lua Console / finally click start
 
-CRC | MD5 | SHA1
-------------- | ------------- | -------------
-B19ED489 | CDD3C8C37322978CA8669B34BC89C804 | 6B47BB75D16514B6A476AA0C73A683A2A4C18765
-3. Clone the repository or download the zip file and place the neat-mario folder in your \BizHawk-2.2\Lua\SNES\ folder. (like: BizHawk-2.2\Lua\SNES\neat-mario)
-4. Open config.lua and change variable _M.BizhawkDir to point on your BizHawk directory.
-5. Open BizHawk (EmuHawk.exe)
-6. Click File > Open ROM (Ctrl + O) and find Super Mario World (USA).sfc file. 
-7. Once loaded, click Tools > Lua Console
-8. In the new window, click Script > Open Script (Ctrl + O) and select mario-neat.lua in your \BizHawk-2.2\Lua\SNES\neat-mario folder.
-9. The NEAT control window will display and you can then click Start to begin training.
+I, in no way claim to have written any of the LUA Neat implementation in this script other than some minor tweaks to weighting and generation. 
 
-[1]:https://github.com/wts42/Neat-Genetic-Mario/wiki/MarI-O
-[2]:https://github.com/mam91/Neat-Genetic-Mario
-[Fixed function which determines if Mario got hit]:https://github.com/mam91/Neat-Genetic-Mario/commit/d5ec3aaded533f1c5061e144e6c3b250d6f63e28
-[Added a variable for BizHawk path to make setup easier]:https://github.com/wts42/Neat-Genetic-Mario/commit/9c920eb34be55a69c751cf5e725516a1ab2c6205
-[Readme#1]:https://github.com/wts42/Neat-Genetic-Mario/commit/7b87f31eda57beced08bd360c4ec620c17375e8c
-[Include lists of good/neutral for both sprites and extended sprites]:https://github.com/wts42/Neat-Genetic-Mario/commit/95179cf7b655daca9586980c1248cd0027131330
-[Include powerups to fitness calculation]:https://github.com/wts42/Neat-Genetic-Mario/pull/3
-[Option to start with specific powerup]:https://github.com/wts42/Neat-Genetic-Mario/pull/3
-[Give bonus for received 1-Ups]:https://github.com/wts42/Neat-Genetic-Mario/pull/3
-[BizHawk]:https://github.com/TASVideos/BizHawk
-[BizHawk prerequesites]:https://github.com/TASVideos/BizHawk-Prereqs/releases
-[BizHawk binaries]:https://github.com/TASVideos/BizHawk/releases
-[Super Mario World (USA)]:https://www.google.de/search?q=Super+Mario+World+(USA).sfc
+## Observations
 
-[Tinkering]:http://togelius.blogspot.de/2016/04/the-differences-between-tinkering-and.html
-=======
-9. The NEAT control window will display and you can then click Start to begin training.
+In most instances, it takes around 19 generations to get past the first level, after 25 generations mine was getting to
+robonik every time. Time to this generation is around 3 days. 
+
+## Notes
+
+* Notice that in Mario, holding the A button will cause many jumps, on sonic, this causes 1 jump. Instantly putting the AI
+into some bad habbits that continue into later generations taking many more runs to stop. The new JoyPad function will, should the A button
+be held by the AI, will set itself to false regardless every 5th frame, this has the same affect as holding down A causing many jumps. 
+This speeds up generation and progress by a huge degree. 
+
+
