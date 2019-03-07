@@ -36,7 +36,7 @@ _CONFIG.NeatConfig = {
 	StepSize = 0.1,
 	DisableMutationChance = 0.4,
 	EnableMutationChance = 0.2,
-	TimeoutConstant = 30,
+	TimeoutConstant = 10,
 	MaxNodes = 10000000,
 }
 
@@ -54,7 +54,7 @@ _CONFIG.ringMultiplier = 10
 _CONFIG.scoreMultiplier = 1
 _CONFIG.powerUpMultiplier = 1000
 _CONFIG.bossHitMultiplier = 3000
-_CONFIG.levelBeatMultiplier = 10
+_CONFIG.levelBeatMultiplier = 0.1
 _CONFIG.jumpMultiplier = 20
 
 --Values to apply to inputs
@@ -636,7 +636,7 @@ function _SONIC.getInputs()
 
 					if dist > 8 then
 						inputDeltaDistance[#inputDeltaDistance] = _MATH.squashDistance(dist)
-						gui.drawLine(screenX, screenY, sprites[i]["x"] - layer1x, sprites[i]["y"] - layer1y, 0x50000000)
+						--gui.drawLine(screenX, screenY, sprites[i]["x"] - layer1x, sprites[i]["y"] - layer1y, 0x50000000)
 					end
 				end
 			end
