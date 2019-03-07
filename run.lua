@@ -22,11 +22,11 @@ _CONFIG.State = "S2.State"
 _CONFIG.NeatConfig = {
 	Filename = _CONFIG.StateDir .. _CONFIG.State,
 	PoolFilename = _CONFIG.PoolDir .. _CONFIG.State,
-	Population = 300,
+	Population = 200, -- 300
 	DeltaDisjoint = 2.0,
 	DeltaWeights = 0.4,
 	DeltaThreshold = 1.0,
-	StaleSpecies = 15,
+	StaleSpecies = 10, -- 10
 	MutateConnectionsChance = 0.25,
 	PerturbChance = 0.90,
 	CrossoverChance = 0.75,
@@ -36,32 +36,34 @@ _CONFIG.NeatConfig = {
 	StepSize = 0.1,
 	DisableMutationChance = 0.4,
 	EnableMutationChance = 0.2,
-	TimeoutConstant = 20,
-	MaxNodes = 1000000,
+	TimeoutConstant = 30,
+	MaxNodes = 10000000,
 }
 
+--Enable / Disable These Fitness Reward Bonuses
+_CONFIG.enableRingBonus = true -- Reward for collecting Rings
+_CONFIG.enableScoreBonus = true -- Reward for Score
+_CONFIG.enablePowerUpBonus = true -- Reward for collecting powerups
+_CONFIG.enableBossHitBonus = true -- Reward for any hits on a boss
+_CONFIG.enableLevelBeatBonus = true -- Reward for beating a level
+_CONFIG.enableJumpBonus = false -- Reward for the number of jumps
+_CONFIG.enableVelocityBonus = true -- Reward for maintaing velocity
+
 --Bonus Multipliers
-_CONFIG.ringMultiplier = 100
+_CONFIG.ringMultiplier = 10
 _CONFIG.scoreMultiplier = 1
 _CONFIG.powerUpMultiplier = 1000
 _CONFIG.bossHitMultiplier = 3000
 _CONFIG.levelBeatMultiplier = 10
 _CONFIG.jumpMultiplier = 20
 
---Enable / Disable These Reward Bonuses
-_CONFIG.enableRingBonus = true
-_CONFIG.enableScoreBonus = true
-_CONFIG.enablePowerUpBonus = true
-_CONFIG.enableBossHitBonus = true
-_CONFIG.enableLevelBeatBonus = true
-_CONFIG.enableJumpBonus = true
-
 --Values to apply to inputs
 _CONFIG.bad = -1
-_CONFIG.neutral = 0
-_CONFIG.good = 1
+_CONFIG.neutral = 1
+_CONFIG.good = -1
 _CONFIG.boss = -1
 
+--Button names used by BizHawk
 _CONFIG.ButtonA = "P1 A"
 _CONFIG.ButtonUp = "P1 Up"
 _CONFIG.ButtonDown = "P1 Down"
@@ -76,7 +78,9 @@ _CONFIG.ButtonNames = {
 	_CONFIG.ButtonRight,
 }
 	
-_CONFIG.BoxRadius = 6
+_CONFIG.autoFireButton = true -- Should holding down a button act as a single push or many pushes  
+
+_CONFIG.BoxRadius = 10 --Increased from 8
 _CONFIG.InputSize = (_CONFIG.BoxRadius*2+1)*(_CONFIG.BoxRadius*2+1)
 _CONFIG.Running = false
 
@@ -114,7 +118,7 @@ _SPRITES.objectfields = {
 		[0x15] = {type="" , name="SwingingPlatform"},
 		[0x16] = {type="" , name="HTZLift"},
 		[0x18] = {type="" , name="ARZPlatform"},
-		[0x18] = {type="" , name="EHZPlatform"},
+		[0x18] = {type="good" , name="EHZPlatform"},
 		[0x19] = {type="" , name="CPZPlatform"},
 		[0x19] = {type="" , name="OOZMovingPform"},
 		[0x19] = {type="" , name="WFZPlatform"},
@@ -468,14 +472,13 @@ function _SONIC.powerUpCheck()
 		powerUpCounter = powerUpCounter + 1
 	end
 
-
 end
 
 -- Tile Map
 function _SONIC.getTile(dx, dy)
 	x = math.floor((sonicX+dx+8)/16)
 	y = math.floor((sonicY+dy)/16)
-		
+
 	return memory.readbyte(0x8000 + math.floor(x/0x10)*0x1B0 + y*0x10 + x%0x10)
 end
 
@@ -545,6 +548,7 @@ end
 --Not Required for SONIC
 function _SONIC.getExtendedSprites()
 	local extended = {}
+
 	return extended
 end
 
@@ -631,8 +635,8 @@ function _SONIC.getInputs()
 					--_SONIC.spriteInputToConsole(sprites[i],distx)
 
 					if dist > 8 then
-						--inputDeltaDistance[#inputDeltaDistance] = _MATH.squashDistance(dist)
-						--gui.drawLine(screenX, screenY, sprites[i]["x"] - layer1x, sprites[i]["y"] - layer1y, 0x50000000)
+						inputDeltaDistance[#inputDeltaDistance] = _MATH.squashDistance(dist)
+						gui.drawLine(screenX, screenY, sprites[i]["x"] - layer1x, sprites[i]["y"] - layer1y, 0x50000000)
 					end
 				end
 			end
@@ -664,18 +668,20 @@ function _SONIC.clearJoypad()
 	joypad.set(controller)
 end
 
---Custom function for pressing joypad buttons. idea is this stops the holding of buttons, read readme.md to see why
+--Custom function for pressing joypad buttons.
 function _SONIC.setJoypad(controller, gameFrame)
 
-	for k, v in pairs(controller) do
-		if frameController[k] == true then
-			if k == _CONFIG.ButtonA then
-				if gameFrame%5 == 0 then
-					controller[k] = false
+	if _CONFIG.autoFireButton == true then
+		for k, v in pairs(controller) do
+			if frameController[k] == true then
+				if k == _CONFIG.ButtonA then
+					if gameFrame%5 == 0 then
+						controller[k] = false
+					end
 				end
 			end
-		end
-	end	
+		end	
+	end
 
 	joypad.set(controller)
 	frameController = controller
