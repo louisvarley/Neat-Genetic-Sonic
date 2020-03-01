@@ -5,7 +5,7 @@ Update to [Seth Bling's Mar I/O][1] lua code, forked from [mam91/Neat-Genetic-Ma
 Original https://github.com/wts42/Neat-Genetic-Mario/
 Updated https://github.com/mam91/Neat-Genetic-Mario
 
-This lua code originally written for Maria on the SNES / NES. This implementation is coded
+This lua code originally written for Mario on the SNES / NES. This implementation is coded
 to use the same underlying NEAT lua code with tweaks for Sonic the Hedgehog 2 on the Megadrive / Genesis. 
 
 ## Additions & changes ##
